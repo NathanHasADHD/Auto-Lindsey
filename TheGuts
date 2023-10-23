@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>D20 Fortune Teller</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 30px;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>D20 Fortune Teller</h1>
+    <p>Click the button to roll the virtual D20 dice and see your fortune:</p>
+    <button id="rollButton">Roll D20</button>
+    <p id="result"></p>
+
+    <script>
+        const rollButton = document.getElementById('rollButton');
+        const resultElement = document.getElementById('result');
+
+        // Responses based on the dice roll
+        const responses = [
+            [
+                "It's a critical failure. Your day might be challenging, but you'll learn from it.",
+                "It's a critical failure. Don't worry, it's just a little setback.",
+                "It's a critical failure. Keep your spirits high; better days are coming.",
+                "It's a critical failure. The morning might be tough, but the day can improve.",
+                "It's a critical failure. Challenges lie ahead, but you're up for it."
+            ],
+            [
+                "You rolled a 2. The day ahead doesn't look great, but it's not the worst.",
+                "You rolled a 2. Keep your chin up; there's room for improvement.",
+                "You rolled a 2. It's a low roll, but you can make the best of it.",
+                "You rolled a 2. The start is rough, but things can turn around.",
+                "You rolled a 2. Not the best roll, but it's only the beginning."
+            ],
+            [
+                "You rolled a 3. Today will be ordinary, nothing special.",
+                "You rolled a 3. Expect a routine day with no major surprises.",
+                "You rolled a 3. It's a standard day, nothing to get excited about.",
+                "You rolled a 3. Don't expect much excitement today.",
+                "You rolled a 3. It's a day with a predictable routine."
+            ],
+            [
+                "You rolled a 4. It's a mediocre day, but you can find moments of joy.",
+                "You rolled a 4. Expect an average day with some ups and downs.",
+                "You rolled a 4. It's a day with no extremes, just the usual routine.",
+                "You rolled a 4. The day is plain, but it's what you make of it that counts.",
+                "You rolled a 4. A standard day awaits, not too exciting, not too dull."
+            ],
+            [
+                "You rolled a 5. Things might not go your way, but you'll make the best of it.",
+                "You rolled a 5. A bit of bad luck, but you can turn it around.",
+                "You rolled a 5. It's a challenging day, but you're up for the task.",
+                "You rolled a 5. A bumpy start, but you can smooth out the journey.",
+                "You rolled a 5. Adversity today, but you'll rise above it."
+            ],
+            [
+                "You rolled a 6. The day holds promise, but it's up to you to seize it.",
+                "You rolled a 6. Opportunity knocks; answer the door with enthusiasm.",
+                "You rolled a 6. It's a day filled with potential; make it count.",
+                "You rolled a 6. The start of a great day; just keep the momentum going.",
+                "You rolled a 6. A favorable roll! Today is yours to shape."
+            ],
+            [
+                "You rolled a 7. A decent day is ahead; don't let it go to waste.",
+                "You rolled a 7. It's an okay day, but it can be better with effort.",
+                "You rolled a 7. Nothing exceptional, but it's a canvas for your actions.",
+                "You rolled a 7. The day is what you make of it; aim high.",
+                "You rolled a 7. A good roll! Embrace the possibilities."
+            ],
+            [
+                "You rolled an 8. Luck is on your side, enjoy your day.",
+                "You rolled an 8. A fortunate day awaits; savor every moment.",
+                "You rolled an 8. Expect some good fortune; make the most of it.",
+                "You rolled an 8. Luck smiles upon you; ride the wave of positivity.",
+                "You rolled an 8. A day of favorable outcomes. Bask in the good vibes."
+            ],
+            [
+                "You rolled a 9. Today will be better than expected.",
+                "You rolled a 9. A pleasant surprise is in store for your day.",
+                "You rolled a 9. It's a day full of hidden treasures; uncover them.",
+                "You rolled a 9. Anticipate a better day than you first thought.",
+                "You rolled a 9. A day with unexpected delights. Enjoy the journey."
+            ],
+            [
+                "You rolled a 10. It's a good day to be you!",
+                "You rolled a 10. The universe smiles on you; relish the moment.",
+                "You rolled a 10. An exceptional day for you to shine.",
+                "You rolled a 10. A remarkable day to celebrate who you are.",
+                "You rolled a 10. The best possible roll! Your day is destined for greatness."
+            ],
+            [
+                "You rolled an 11. Things are looking up!",
+                "You rolled an 11. An upward trend in your day's fortune awaits.",
+                "You rolled an 11. It's a day of rising optimism; seize the opportunities.",
+                "You rolled an 11. The day is on an upward trajectory; stay positive.",
+                "You rolled an 11. An auspicious roll! Your day is taking a turn for the better."
+            ],
+            [
+                "You rolled a 12. Luck favors you today.",
+                "You rolled a 12. Fortunes are in your favor; embrace the blessings.",
+                "You rolled a 12. Luck is your ally; use it wisely.",
+                "You rolled a 12. The day is sprinkled with good luck; make the most of it.",
+                "You rolled a 12. A day where luck is on your side. Savor the serendipity."
+            ],
+            [
+                "You rolled a 13. It's a day filled with opportunities.",
+                "You rolled a 13. The day is brimming with chances; seize them all.",
+                "You rolled a 13. An opportunity-rich day. Don't let them slip away.",
+                "You rolled a 13. The universe offers you an abundance of opportunities.",
+                "You rolled a 13. A day where opportunities are endless. Grab them all!"
+            ],
+            [
+                "You rolled a 14. Today is yours for the taking.",
+                "You rolled a 14. The day is your playground; make the most of it.",
+                "You rolled a 14. It's your day to conquer and enjoy the rewards.",
+                "You rolled a 14. The world is at your feet; take bold steps.",
+                "You rolled a 14. A day to seize and make your own. You're in control."
+            ],
+            [
+                "You rolled a 15. Expect a fantastic day!",
+                "You rolled a 15. Anticipate a day filled with wonder and amazement.",
+                "You rolled a 15. A day of magic and marvels; enjoy the spectacle.",
+                "You rolled a 15. The day is brimming with fantastic possibilities.",
+                "You rolled a 15. A day of pure enchantment. Let the adventure begin!"
+            ],
+            [
+                "You rolled a 16. The day is yours to conquer.",
+                "You rolled a 16. You're the master of your destiny today; forge ahead.",
+                "You rolled a 16. A day for bold actions; take the lead.",
+                "You rolled a 16. The world is your oyster; savor the taste of success.",
+                "You rolled a 16. A day of victory and triumph. Embrace it."
+            ],
+            [
+                "You rolled a 17. Victory is in your favor today.",
+                "You rolled a 17. The taste of victory is sweet; savor it.",
+                "You rolled a 17. Success is on the horizon; reach out and claim it.",
+                "You rolled a 17. A day for champions; wear your victory proudly.",
+                "You rolled a 17. A victorious day. Revel in your achievements."
+            ],
+            [
+                "You rolled an 18. Your day will be legendary!",
+                "You rolled an 18. A day filled with legendary feats and tales.",
+                "You rolled an 18. The stuff of legends unfolds today; be epic.",
+                "You rolled an 18. A legendary day; write your story in the annals of time.",
+                "You rolled an 18. A day to become a legend. Make history!"
+            ],
+            [
+                "You rolled a 19. Fate smiles upon you; it's an incredible day.",
+                "You rolled a 19. Fate's favor is upon you; embrace the extraordinary.",
+                "You rolled a 19. It's a day beyond imagination. Savor the incredible.",
+                "You rolled a 19. A day of astonishing fortune; revel in the amazement.",
+                "You rolled a 19. An incredible roll! Your day is filled with awe."
+            ],
+            [
+                "You rolled a 20. Your enemies cower at your might. Today will be a good day, even if you have to make it one yourself.",
+                "You rolled a 20. The universe bows to your greatness. A day of unparalleled triumph awaits.",
+                "You rolled a 20. You are unstoppable. Today is a day for the history books.",
+                "You rolled a 20. A day of absolute dominance. Make it legendary.",
+                "You rolled a 20. A roll of destiny! You are the hero of this epic day."
+            ]
+
+        ];
+
+        rollButton.addEventListener('click', () => {
+            const rollResult = Math.floor(Math.random() * 20) + 1;
+            const responseSet = responses[rollResult - 1];
+            const randomResponse = responseSet[Math.floor(Math.random() * responseSet.length)];
+            resultElement.textContent = `You rolled a ${rollResult}. ${randomResponse}`;
+        });
+    </script>
+</body>
+</html>
